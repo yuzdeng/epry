@@ -1,0 +1,99 @@
+{
+  "_args": [
+    [
+      "epry",
+      ""
+    ],
+    [
+      "epry",
+      ""
+    ]
+  ],
+  "_from": "epry@latest",
+  "_id": "epry@1.0.6",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/epry",
+  "_nodeVersion": "4.0.0",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/epry-1.0.6.tgz_1478240778255_0.7258429657667875"
+  },
+  "_npmUser": {
+    "email": "yuzdeng@gmail.com",
+    "name": "yuzdeng"
+  },
+  "_npmVersion": "3.8.6",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "epry",
+    "raw": "epry",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_shrinkwrap": null,
+  "_spec": "epry",
+  "_where": "",
+  "author": {
+    "email": "yuzdeng@gmail.com",
+    "name": "yuzhe deng"
+  },
+  "bin": {
+    "epry": "./epry"
+  },
+  "contributors": [
+    {
+      "email": "lhluo@tudou.com",
+      "name": "Longhao Luo"
+    }
+  ],
+  "dependencies": {
+    "http-proxy": "~1.11.1",
+    "iconv-lite": "~0.2.5",
+    "less": "~1.4.0-b2",
+    "mime": "~1.2.7",
+    "optimist": "~0.3.5",
+    "pkginfo": "~0.3.0",
+    "react-tools": "~0.13.3",
+    "request": "~2.12.0",
+    "watchr": "~2.4.3"
+  },
+  "description": "HTTP Rewrite Tool based on hrt tool",
+  "devDependencies": {
+    "tap": "~0.3.2"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "3ae1b9838b907c8b4903e17a7a92b5d43a731d35",
+    "tarball": "https://registry.npmjs.org/epry/-/epry-1.0.6.tgz"
+  },
+  "installable": true,
+  "keywords": [
+    "debug",
+    "frontend",
+    "http",
+    "proxy",
+    "rewrite",
+    "server"
+  ],
+  "license": "GPL",
+  "maintainers": [
+    {
+      "email": "yuzdeng@gmail.com",
+      "name": "yuzdeng"
+    }
+  ],
+  "name": "epry",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {},
+  "scripts": {
+    "test": "node ./test/"
+  },
+  "version": "1.0.6"
+}
