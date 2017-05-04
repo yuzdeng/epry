@@ -16,9 +16,9 @@ var Optimist = require('optimist');
 Optimist.usage([
 	'Usage: pry /path/to/config.js --port=[number] --debug=[true/false]\n\n',
 	'Examples:\n',
-	'pry ./config/my.js\n',
-	'pry ./config/my.js --port=8080\n',
-	'pry ./config/my.js --debug=true',
+	'epry ./config/my.js\n',
+	'epry ./config/my.js --port=8080\n',
+	'epry ./config/my.js --debug=true',
 ].join(''));
 
 var ARGV = Optimist.argv;
@@ -77,7 +77,7 @@ function main() {
 			config : CONFIG,
 			util : Util,
 			req : request,
-			res : response,
+			res : response
 		}
 
 		if (DEBUG) {
@@ -102,12 +102,11 @@ function main() {
 				// local file
 				if (!/^https?:\/\//.test(to)) {
 					if (merge) {
-						merge.call(me, to, function(contentType, buffer, encoding) {
+						merge.call(me,from, to, function(contentType, buffer, encoding) {
 							if (typeof buffer == 'string' && encoding) {
 								buffer = Iconv.toEncoding(buffer, encoding);
 							}
 							setResponse(response, contentType, buffer);
-
 						});
 						return;
 					}
@@ -131,8 +130,8 @@ function main() {
 		var proxy = new HttpProxy.createProxyServer({
 			target : {
 				host : parsed.hostname,
-				port : parsed.port || 80,
-			},
+				port : parsed.port || 80
+			}
 		});
 		proxy.on('error', function (err, req, res) {
 			// res.writeHead(500, {'Content-Type': 'text/plain'});
@@ -141,6 +140,13 @@ function main() {
 			}
 
 			res.end('Something went wrong. And we are reporting a custom error message.');
+		});
+
+		proxy.on('proxyRes',function(proxyRes,req,res){
+			if(from){
+
+			}
+
 		});
 
 

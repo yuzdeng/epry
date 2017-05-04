@@ -4,9 +4,9 @@ var Util = require('../util');
 var Less = require('less');
 var Mime = require('mime');
 var Iconv = require('iconv-lite');
-var ReactTools = require('react-tools');
+//var ReactTools = require('react-tools');
 
-var RE_AUTOFIXNAME = /define\((?=[^'"])/;
+	var RE_AUTOFIXNAME = /define\((?=[^'"])/;
 
 // URL移除版本号
 function stripVersionInfo(url) {
@@ -79,32 +79,34 @@ function fixModule(path, str) {
 }
 
 function replaceCombomText(path,str){
-	var sourceMapRoot=path.replace(/^(.*?)[\\\/](javascripts)[\\\/].*$/, '$1');
-	var subDir = /js\//.test(path)?"js":'javascripts';
-	var regSourceMapExp=/\/\*\s*@sourceMap:(.|\s)+?;\s*\*\//ig;///\/\*.*sourceMap:.*;+?\*\//ig;
-	var sourceMap=regSourceMapExp.exec(str);
-	var dist='';
-	//获取sourceMap的list
-	if(sourceMap&&sourceMap[0]){
-		var sourceMapList=sourceMap[0].split("@sourceMap:");
-		for(var i=0;i<sourceMapList.length;i++){
-			if((/\.js/g).test(sourceMapList[i])){
-				var sourceMapUrl=sourceMapList[i].match(/.+?\.js/g);
-				var sourcePath=sourceMapRoot+'/'+subDir+'/'+sourceMapUrl[0];
-				var sourceMapFileStr=Util.readFileSync(sourcePath,'utf8');
-				dist+=sourceMapFileStr + '\n';
-				//pathMap[sourcePath]=sourceMapFileStr;
-			}
-		}
-		return dist;
-
-	}
-	return str;
+		var sourceMapRoot=path.replace(/^(.*?)[\\\/](javascripts|combine)[\\\/].*$/, '$1');
+		var subDir = /js\//.test(path)?"js":'javascripts';
+		var dist='';
+		//获取sourceMap的list
+		var sourceMapList = Util.getSourceMap(str);
+		var rootPath = sourceMapRoot+'/'+subDir;
+		var dist=Util.getComboText(rootPath,sourceMapList);
+		return dist ? dist : str;
+		//if(sourceMapList){
+		//	//var sourceMapList=sourceMap[0].split("@sourceMap:");
+		//	for(var i=0;i<sourceMapList.length;i++){
+		//		if((/\.js/g).test(sourceMapList[i])){
+		//			var sourceMapUrl=sourceMapList[i].match(/.+?\.js/g);
+		//			var sourcePath=sourceMapRoot+'/'+subDir+'/'+sourceMapUrl[0];
+		//			var sourceMapFileStr=Util.readFileSync(sourcePath,'utf8');
+		//			dist+=sourceMapFileStr + '\n';
+		//			//pathMap[sourcePath]=sourceMapFileStr;
+		//		}
+		//	}
+		//	return dist;
+        //
+		//}
+		//return str;
 
 }
 
 // 合并本地文件
-function merge(path, callback) {
+function merge(url,path, callback) {
 	var root = path.replace(/^(.*?)[\\\/](src|build|dist)[\\\/].*$/, '$1');
 
 	var newPath = path.split(Path.sep).join('/');
@@ -129,25 +131,35 @@ function merge(path, callback) {
 		return;
 	}
 
-	if (!/src\/javascripts\/(lib|lite|loader|react)\.js$/.test(newPath) && /src\/javascripts\/.+\.js$/.test(newPath)) {
+	if (/src\/(javascripts|combine)\/.+\.js$/.test(newPath)) { //!/src\/javascripts\/(lib|lite|loader|react)\.js$/.test(newPath) &&
 		if(Fs.existsSync(path)){
 			var str = Util.readFileSync(path, 'utf-8');
 			//str = fixModule(path, str);
 			str = replaceCombomText(path,str);
-			if (str.indexOf('use strict') > 0) {
-				str = ReactTools.transform(str, { harmony: true });
-				// console.log(ReactTools.transform(str));
-			}
+			//if (str.indexOf('use strict') > 0) {
+			//	str = ReactTools.transform(str, { harmony: true });
+			//	// console.log(ReactTools.transform(str));
+			//}
 			return callback('application/javascript', str);
 		}else{
-			return console.error('Not find File: '+ path)
+			if(/combine\/.+\.js$/.test(newPath)){
+				Util.get(url,'utf-8',function(str){
+					str = replaceCombomText(path,str);
+					return callback('application/javascript', str);
+				});
+			}else{
+				return console.error('Not find File: '+ path)
+
+			}
 		}
+	}else{
+		var contentType = Mime.lookup(path);
+		var buffer = Util.readFileSync(path);
+
+		return callback(contentType, buffer);
 	}
 
-	var contentType = Mime.lookup(path);
-	var buffer = Util.readFileSync(path);
 
-	return callback(contentType, buffer);
 }
 
 exports.stripVersionInfo = stripVersionInfo;

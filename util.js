@@ -110,6 +110,32 @@ function rewrite(map, url, serverRoot) {
 	return url;
 }
 
+function getSourceMap(str){
+	var regSourceMapExp=/\/\*\s*@sourceMap:(.|\s)+?;\s*\*\//ig;///\/\*.*sourceMap:.*;+?\*\//ig;
+	var sourceMap=regSourceMapExp.exec(str);
+	if(sourceMap&&sourceMap[0]){
+		var sourceMapList=sourceMap[0].split("@sourceMap:");
+		return sourceMapList;
+	}
+}
+
+function getComboText(path,fileList){
+	var dist='';
+	//获取sourceMap的list
+	if(fileList){
+		for(var i=0;i<fileList.length;i++){
+			if((/\.js/g).test(fileList[i])){
+				var sourceMapUrl=fileList[i].match(/.+?\.js/g);
+				var sourcePath=path+'/'+sourceMapUrl[0];
+				var sourceMapFileStr=readFileSync(sourcePath,'utf8');
+				dist+=sourceMapFileStr + '\n';
+				//pathMap[sourcePath]=sourceMapFileStr;
+			}
+		}
+	}
+	return dist;
+}
+
 exports.each = each;
 exports.isRegExp = isRegExp;
 exports.undef = undef;
@@ -120,3 +146,5 @@ exports.loadPlugin = loadPlugin;
 exports.readFileSync = readFileSync;
 exports.get = get;
 exports.rewrite = rewrite;
+exports.getSourceMap = getSourceMap;
+exports.getComboText = getComboText;

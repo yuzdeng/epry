@@ -59,7 +59,6 @@
     "mime": "~1.2.7",
     "optimist": "~0.3.5",
     "pkginfo": "~0.3.0",
-    "react-tools": "~0.13.3",
     "request": "~2.12.0",
     "watchr": "~2.4.3"
   },
@@ -70,7 +69,7 @@
   "directories": {},
   "dist": {
     "shasum": "3ae1b9838b907c8b4903e17a7a92b5d43a731d35",
-    "tarball": "https://registry.npmjs.org/epry/-/epry-1.0.6.tgz"
+    "tarball": "https://registry.npmjs.org/epry/-/epry-1.0.7.tgz"
   },
   "installable": true,
   "keywords": [
@@ -91,9 +90,12 @@
   "name": "epry",
   "optionalDependencies": {},
   "readme": "ERROR: No README data found!",
-  "repository": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yuzdeng/epry"
+  },
   "scripts": {
     "test": "node ./test/"
   },
-  "version": "1.0.6"
+  "version": "1.0.7"
 }

@@ -34,8 +34,8 @@ exports.before = function(url) {
 	return url;
 };
 
-exports.merge = function(path, callback) {
+exports.merge = function(url,path, callback) {
 	var Merge = this.util.loadPlugin('merge');
 
-	Merge.merge.call(this, path, callback);
+	Merge.merge.call(this, url, path, callback);
 };
